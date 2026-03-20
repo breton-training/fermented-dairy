@@ -615,24 +615,31 @@
       border-top: 1px solid var(--border);
     }
 
+    /* ── Mobile Sidebar Overlay ── */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(45,42,38,0.4);
+      z-index: 89;
+    }
+    .sidebar-overlay.open { display: block; }
+
     /* ── Mobile ── */
     @media (max-width: 768px) {
-      .sidebar { display: none; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 260px;
+        padding-top: 24px;
+        box-shadow: none;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(45,42,38,0.15);
+      }
       .main-content { margin-left: 0 !important; }
       nav .nav-links { display: none; }
-      nav .nav-links.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 64px;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 24px;
-        gap: 20px;
-        border-bottom: 1px solid var(--border);
-        box-shadow: var(--shadow);
-      }
       .hamburger { display: block; }
       .hero { min-height: auto; padding: 120px 20px 64px; }
       section { padding: 64px 20px; }
@@ -658,7 +665,7 @@
         <li><a href="#recipes">Recipes</a></li>
         <li><a href="#equipment">Equipment</a></li>
       </ul>
-      <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+      <button class="hamburger" onclick="toggleMobileSidebar()" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -699,6 +706,8 @@
       <a href="#equipment">Equipment</a>
     </div>
   </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -1403,6 +1412,16 @@
   </footer>
 
   <script>
+    // Mobile sidebar toggle
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
     // Smooth scroll for anchor links (respects scroll-margin-top)
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
@@ -1414,6 +1433,7 @@
           const y = target.getBoundingClientRect().top + window.scrollY - 80;
           window.scrollTo({ top: y, behavior: 'smooth' });
           document.getElementById('navLinks').classList.remove('open');
+          closeMobileSidebar();
         }
       });
     });
