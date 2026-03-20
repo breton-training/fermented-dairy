@@ -23,6 +23,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    [id] { scroll-margin-top: 80px; }
 
     body {
       font-family: 'Georgia', 'Times New Roman', serif;
@@ -668,7 +669,7 @@
     <div class="sidebar-group">
       <div class="sidebar-group-label">Pregnancy &amp; Baby</div>
       <a href="#keystone" class="priority-link">B. infantis &amp; Infant Microbiome</a>
-      <a href="#strain-crispatus" class="priority-link">L. crispatus &amp; Miscarriage Prevention</a>
+      <a href="#strain-crispatus" class="priority-link">L. crispatus &amp; Vaginal Health</a>
       <a href="#reference-pregnancy">Pregnancy Priority Protocol</a>
       <a href="#strain-infantis">B. infantis Yogurt Recipe</a>
     </div>
@@ -1001,8 +1002,10 @@
             <div class="strain-specs">
               <div class="strain-spec"><strong>100&deg;F</strong>Temperature</div>
               <div class="strain-spec"><strong>36&ndash;40 hours</strong>Duration</div>
-              <div class="strain-spec"><strong>Potato starch + sucrose</strong>Never inulin</div>
+              <div class="strain-spec"><strong>Potato starch + sucrose + HMO</strong>Never inulin; HMO belongs in this jar</div>
               <div class="strain-spec"><strong>NAC 250mg</strong>Obligate anaerobe</div>
+              <div class="strain-spec"><strong>WPH 1 tbsp + Collagen 40g</strong>Universal nitrogen sources</div>
+              <div class="strain-spec"><strong>Xylitol 2 tsp</strong>Sweetener + starch dispersal</div>
             </div>
             <div class="strain-tags">
               <span class="strain-tag">Infant Health</span>
@@ -1164,7 +1167,7 @@
               <td><strong>B. infantis</strong></td>
               <td>100&deg;F</td>
               <td>36&ndash;40 hrs</td>
-              <td>Potato starch + sucrose (no inulin)</td>
+              <td>Potato starch + sucrose + 2'-FL HMO (no inulin)</td>
               <td>Evivo EVC001 (1 sachet)</td>
               <td class="check">250mg</td>
               <td>3&ndash;4 batches</td>
@@ -1400,13 +1403,16 @@
   </footer>
 
   <script>
-    // Smooth scroll for anchor links
+    // Smooth scroll for anchor links (respects scroll-margin-top)
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#') return;
         e.preventDefault();
-        const target = document.querySelector(a.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const y = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
           document.getElementById('navLinks').classList.remove('open');
         }
       });
